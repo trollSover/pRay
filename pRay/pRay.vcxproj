@@ -38,15 +38,19 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(WindowsSDK_IncludePath);../;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(DXSDK_DIR)Include;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(DXSDK_DIR)Libx86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -64,19 +68,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application_RT.cpp" />
+    <ClCompile Include="CoreSystems\System.cpp" />
+    <ClCompile Include="CoreSystems\Window.cpp" />
+    <ClCompile Include="Global\TimerQPC.cpp" />
+    <ClCompile Include="RayTracer\Application_RT.cpp" />
+    <ClCompile Include="RayTracer\D3D11_Driver.cpp" />
+    <ClCompile Include="RayTracer\Renderer_RT.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="System.cpp" />
-    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application_RT.h" />
-    <ClInclude Include="CoreStd.h" />
-    <ClInclude Include="IApplication.h" />
-    <ClInclude Include="IInput.h" />
-    <ClInclude Include="SimpleInput.h" />
-    <ClInclude Include="System.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="CoreSystems\CoreStd.h" />
+    <ClInclude Include="CoreSystems\IApplication.h" />
+    <ClInclude Include="CoreSystems\IInput.h" />
+    <ClInclude Include="CoreSystems\IRenderer.h" />
+    <ClInclude Include="CoreSystems\ITimer.h" />
+    <ClInclude Include="CoreSystems\System.h" />
+    <ClInclude Include="CoreSystems\Window.h" />
+    <ClInclude Include="Global\SimpleInput.h" />
+    <ClInclude Include="Global\TimerQPC.h" />
+    <ClInclude Include="RayTracer\Application_RT.h" />
+    <ClInclude Include="RayTracer\D3D11_Driver.h" />
+    <ClInclude Include="RayTracer\Renderer_RT.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

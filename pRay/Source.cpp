@@ -1,8 +1,10 @@
-#include "System.h"
-#include "Application_RT.h"
+#include "CoreSystems/System.h"
+#include "RayTracer/Application_RT.h"
+#include "RayTracer/Renderer_RT.h"
 
-CoreSystem core;
-IApplication* g_pApplication;
+CoreSystem		core;
+IApplication*	g_pApplication;
+IRenderer*		g_pRenderer;
 
 #ifdef _DEBUG
 
@@ -15,11 +17,12 @@ int main(int argc, char* argv[])
 		printf("%s\n", argv[i]);
 
 
-	g_pApplication = new Application_RT();
+	g_pApplication	= new Application_RT();
+	g_pRenderer		= new Renderer_RT();
 
 	int msg = 0;
 
-	if (msg = core.Init(g_pApplication, GetModuleHandle(NULL)) == CommonMsg::CM_OK)
+	if (msg = core.Init(g_pApplication, g_pRenderer, GetModuleHandle(NULL)) == CommonMsg::CM_OK)
 	{
 		core.Run();
 	}
@@ -38,13 +41,14 @@ int main(int argc, char* argv[])
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	g_pApplication = new Application_RT();
-
+	g_pApplication	= new Application_RT();
+	g_pRenderer		= new Renderer_RT();
 	int msg = 0;
-	if (msg = core.Init(g_pApplication, hInstance) != 0)
-		return msg;
 
-	core.Run();
+	if (msg = core.Init(g_pApplication, g_pRenderer, GetModuleHandle(NULL)) == CommonMsg::CM_OK)
+	{
+		core.Run();
+	}
 
 	if (msg = core.Close() != 0)
 		return msg;

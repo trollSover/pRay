@@ -1,54 +1,88 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="CoreSystems">
+      <UniqueIdentifier>{9cc06372-51ab-4768-8da3-afb41762a270}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RayTracer_Application">
+      <UniqueIdentifier>{f4a66e8e-f461-42a9-816e-98c1c8ec0d67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CoreSystems\Framework">
+      <UniqueIdentifier>{5eede737-2c77-403d-b8df-ad0f2745c6ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RayTracer_Application\Application">
+      <UniqueIdentifier>{1b6e81a5-72f8-4083-9c38-eb1c00415b8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RayTracer_Application\Graphics">
+      <UniqueIdentifier>{e00db54d-766a-45c0-8a5c-a5d0da3b7e2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Global">
+      <UniqueIdentifier>{ffaf8949-4e14-4b16-98a7-2dbff4a185f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>RayTracer_Application</Filter>
     </ClCompile>
-    <ClCompile Include="System.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="CoreSystems\System.cpp">
+      <Filter>CoreSystems\Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Application_RT.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="CoreSystems\Window.cpp">
+      <Filter>CoreSystems\Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="RayTracer\Application_RT.cpp">
+      <Filter>RayTracer_Application\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracer\Renderer_RT.cpp">
+      <Filter>RayTracer_Application\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracer\D3D11_Driver.cpp">
+      <Filter>RayTracer_Application\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Global\TimerQPC.cpp">
+      <Filter>Global</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="System.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CoreSystems\IApplication.h">
+      <Filter>CoreSystems</Filter>
     </ClInclude>
-    <ClInclude Include="IApplication.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CoreSystems\IInput.h">
+      <Filter>CoreSystems</Filter>
     </ClInclude>
-    <ClInclude Include="CoreStd.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CoreSystems\System.h">
+      <Filter>CoreSystems\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Application_RT.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CoreSystems\CoreStd.h">
+      <Filter>CoreSystems\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CoreSystems\Window.h">
+      <Filter>CoreSystems\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="IInput.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CoreSystems\IRenderer.h">
+      <Filter>CoreSystems</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleInput.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="RayTracer\Application_RT.h">
+      <Filter>RayTracer_Application\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracer\Renderer_RT.h">
+      <Filter>RayTracer_Application\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracer\D3D11_Driver.h">
+      <Filter>RayTracer_Application\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreSystems\ITimer.h">
+      <Filter>CoreSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="Global\SimpleInput.h">
+      <Filter>Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Global\TimerQPC.h">
+      <Filter>Global</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
