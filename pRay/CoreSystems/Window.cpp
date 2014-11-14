@@ -27,10 +27,7 @@ bool Window::Init(HINSTANCE hInstance, HWND& hWnd, Resolution resolution, LPCSTR
 	int x = (GetSystemMetrics(SM_CXSCREEN) - resolution.width) / 2;
 	int y = (GetSystemMetrics(SM_CYSCREEN) - resolution.height) / 2;
 
-	//hWnd = CreateWindowEx(	WS_EX_APPWINDOW, appName, appName, WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
-	//						x, y, resolution.width, resolution.height, NULL, NULL, hInstance, NULL);
-
-	hWnd = CreateWindowEx(	WS_EX_APPWINDOW, appName, appName, WS_BORDER | WS_CAPTION,
+	hWnd = CreateWindowEx(	WS_EX_APPWINDOW, appName, appName, WS_BORDER | WS_CAPTION | WS_OVERLAPPEDWINDOW,
 							x, y, resolution.width, resolution.height, NULL, NULL, hInstance, NULL);
 
 	if (!hWnd)

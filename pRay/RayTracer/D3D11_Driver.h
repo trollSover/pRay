@@ -2,11 +2,7 @@
 
 #include "../CoreSystems/CoreStd.h"
 
-#pragma warning( disable : 4005 )
-
-#include <D3D11.h>
-
-#pragma warning( disable : 4005 )
+#include "D3DStd.h"
 
 class D3D11_Driver
 {

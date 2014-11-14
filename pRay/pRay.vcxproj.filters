@@ -46,6 +46,9 @@
     <ClCompile Include="Global\TimerQPC.cpp">
       <Filter>Global</Filter>
     </ClCompile>
+    <ClCompile Include="RayTracer\XMCamera.cpp">
+      <Filter>RayTracer_Application\Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreSystems\IApplication.h">
@@ -83,6 +86,12 @@
     </ClInclude>
     <ClInclude Include="Global\TimerQPC.h">
       <Filter>Global</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracer\XMCamera.h">
+      <Filter>RayTracer_Application\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracer\D3DStd.h">
+      <Filter>RayTracer_Application\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

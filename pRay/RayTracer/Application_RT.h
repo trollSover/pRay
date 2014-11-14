@@ -1,17 +1,17 @@
 #pragma once
 
 #include "../CoreSystems/IApplication.h"
-
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "d3dcompiler.lib")
+#include "XMCamera.h"
+#include "../Global/SimpleInput.h"
 
 class Application_RT
 	: public IApplication
 {
 private:
-	Resolution	m_resolution;
-	std::string m_appName;
-	IInput*		m_pInput;
+	Resolution		m_resolution;
+	std::string		m_appName;
+	SimpleInput*	m_pInput;
+	XMCamera		m_xmCamera;
 
 protected:
 public:
@@ -27,6 +27,8 @@ private:
 	virtual const	LPCSTR VGetAppName()const final { return m_appName.c_str(); }
 
 	LRESULT	ApplicationProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) final;
+
+	void UpdateCamera(const Time& time);
 
 protected:
 public:

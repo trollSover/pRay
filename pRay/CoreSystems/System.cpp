@@ -16,12 +16,12 @@ CoreSystem::~CoreSystem()
 
 int CoreSystem::Close()
 {
-	ErrorMsg emsg;
+	ErrorMsg emsg("CoreSystem Close");
 
 	if (m_pApplication)
 	{
 		if (!m_pApplication->VClose(emsg))
-			printf("System Close: %s\n", emsg.Msg().c_str());
+			Print(emsg);
 
 		delete m_pApplication;
 	}
@@ -31,7 +31,7 @@ int CoreSystem::Close()
 	if (m_pRenderer)
 	{
 		if (!m_pRenderer->VClose(emsg))
-			printf("System Close: %s\n", emsg.Msg().c_str());
+			Print(emsg);
 
 		delete m_pRenderer;
 	}
@@ -48,7 +48,8 @@ int CoreSystem::Init(IApplication* _application, IRenderer* _renderer, HINSTANCE
 	if (_renderer == nullptr)
 		return CommonMsg::CM_GFX_NULL;
 
-	ErrorMsg emsg;
+	ErrorMsg emsg("CoreSystem Init");
+
 	m_hInstance		= _hInstance;
 	m_pApplication	= _application;
 	m_pRenderer		= _renderer;
@@ -61,19 +62,19 @@ int CoreSystem::Init(IApplication* _application, IRenderer* _renderer, HINSTANCE
 	/* Initialize Window Properties */
 	if (!m_window.Init(m_hInstance, m_hWnd, m_pApplication->VGetResolution(), m_pApplication->VGetAppName()))
 	{
-		Print("System Init: Failed to open window");
+		Print("Failed to create window");
 		return CommonMsg::CM_WIN_FAIL;
 	}
 	/* Intialize Renderer */
 	if (!m_pRenderer->VInit(emsg, m_hWnd, Resolution(m_clientW, m_clientH)))
 	{
-		Print(emsg, "System Init");
+		Print(emsg);
 		return CommonMsg::CM_GFX_FAIL;
 	}
 	/* Initialize Application*/
 	if (!m_pApplication->VInit(emsg))
 	{
-		Print(emsg, "System Init");
+		Print(emsg);
 		return CommonMsg::CM_APP_FAIL;
 	}
 
@@ -89,6 +90,7 @@ int CoreSystem::Run()
 
 	m_pTimer->VUpdate();	/* reset the timer */
 
+	/* main loop of system */
 	while (run)
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -103,12 +105,13 @@ int CoreSystem::Run()
 		}
 		else
 		{
-			Time dt = m_pTimer->VGetTime();
+			Time dt = m_pTimer->VGetTime();			/* get time delta */
+			run		= m_pApplication->VUpdate(dt);	/* update application */
 
-			run = m_pApplication->VUpdate(dt);
+			m_pRenderer->VDraw(dt);					/* update renderer */
 			//run = m_pRenderer->VDraw(time);
-			m_pRenderer->VDraw(dt);
-			// check if we can recover
+
+			// check for errors and if we can recover
 		}	
 		m_pTimer->VUpdate();
 	}

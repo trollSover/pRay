@@ -14,9 +14,9 @@
 
 
 /* Defines */
-#define SAFE_RELEASE(x)			if( x ) { (x)->Release();	(x) = NULL; }
-#define SAFE_DELETE(x)			if( x ) { delete(x);		(x) = NULL; }
-#define SAFE_DELETE_ARRAY(x)	if( x ) { delete[](x);		(x) = NULL; }
+#define SAFE_RELEASE(x)			if( x ) { (x)->Release();	(x) = nullptr; }
+#define SAFE_DELETE(x)			if( x ) { delete(x);		(x) = nullptr; }
+#define SAFE_DELETE_ARRAY(x)	if( x ) { delete[](x);		(x) = nullptr; }
 
 /* Typedefs */
 typedef unsigned int uint;
@@ -25,16 +25,32 @@ typedef unsigned int uint;
 struct ErrorMsg
 {
 private:
-	std::string msg;
+	LPCTSTR msg;
+	LPCTSTR domain;
 
 public:
-	ErrorMsg() {}
+	ErrorMsg(HRESULT _hr, const LPCTSTR _domain)
+		: domain(_domain)
+	{
+		_com_error err(_hr);
+		msg = err.ErrorMessage();
+	}
 
-	ErrorMsg(const std::string _msg) { msg = _msg; }
+	ErrorMsg(const LPCTSTR _domain)
+		: msg(""), domain(_domain)
+	{}
 
-	~ErrorMsg()	{ msg.clear(); }
+	~ErrorMsg()	{ }
 
-	const std::string Msg() { return msg; }
+	const LPCTSTR Msg()		{ return msg; }
+	const LPCTSTR Domain()	{ return domain; }
+
+	void SetMsg(const LPCTSTR _msg) { msg = _msg; }
+	void SetMsg(const HRESULT _hr)
+	{
+		_com_error err(_hr);
+		msg = err.ErrorMessage();
+	}
 };
 
 struct Time
@@ -62,6 +78,14 @@ struct Resolution
 	}
 };
 
+struct Point
+{
+	float x, y;
+	Point()
+		: x(0.0f), y(0.0f)
+	{ }
+};
+
 /* Common Enums */
 enum CommonMsg
 {
@@ -78,13 +102,12 @@ enum CommonMsg
 static void Print(HRESULT hr, LPCTSTR errorDomain = "Undefined")
 {
 	_com_error err(hr);
-	LPCTSTR emsg = err.ErrorMessage();
-	printf("%s: %s\n", errorDomain, err);
+	printf("%s: %s\n", errorDomain, err.ErrorMessage());
 }
 
-static void Print(ErrorMsg& emsg, LPCTSTR errorDomain = "Undefined")
+static void Print(ErrorMsg& emsg)
 {
-	printf("%s: %s\n", errorDomain, emsg.Msg().c_str());
+	printf("%s: %s\n", emsg.Domain(), emsg.Msg());
 }
 
 static void Print(LPCTSTR error)
@@ -95,13 +118,12 @@ static void Print(LPCTSTR error)
 static void Print(HRESULT hr, LPCTSTR errorDomain = "Undefined")
 {
 	_com_error err(hr);
-	LPCTSTR emsg = err.ErrorMessage();
-	MessageBox(NULL, emsg, errorDomain, MB_OK);
+	MessageBox(NULL, err.ErrorMessage(), errorDomain, MB_OK);
 }
 
-static void Print(ErrorMsg& emsg, LPCTSTR errorDomain = "Undefined")
+static void Print(ErrorMsg& emsg)
 {
-	MessageBox(NULL, emsg.Msg().c_str(), errorDomain, MB_OK);
+	MessageBox(NULL, emsg.Msg(), emsg.Domain(), MB_OK);
 }
 static void Print(LPCTSTR error)
 {

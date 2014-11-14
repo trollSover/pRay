@@ -6,9 +6,7 @@ Renderer_RT::Renderer_RT()
 
 Renderer_RT::~Renderer_RT()
 {
-	SAFE_RELEASE(m_pBackBuffer);
 
-	m_driver.Close();
 }
 
 bool Renderer_RT::VInit(ErrorMsg& msg, HWND& hWnd, Resolution resolution)
@@ -20,7 +18,7 @@ bool Renderer_RT::VInit(ErrorMsg& msg, HWND& hWnd, Resolution resolution)
 
 	if (FAILED(hr))
 	{
-		Print(hr, "D3D11 Driver Init Failure");
+		msg.SetMsg(hr);
 		return false;
 	}
 	
@@ -28,7 +26,7 @@ bool Renderer_RT::VInit(ErrorMsg& msg, HWND& hWnd, Resolution resolution)
 
 	if (FAILED(hr))
 	{
-		Print(hr, "BackBuffer Init Failure");
+		msg.SetMsg(hr);
 		return false;
 	}
 
@@ -37,6 +35,8 @@ bool Renderer_RT::VInit(ErrorMsg& msg, HWND& hWnd, Resolution resolution)
 
 bool Renderer_RT::VClose(ErrorMsg& msg)
 {
+	SAFE_RELEASE(m_pBackBuffer);
+	m_driver.Close();
 
 	return true;
 }

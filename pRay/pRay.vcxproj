@@ -74,6 +74,7 @@
     <ClCompile Include="RayTracer\Application_RT.cpp" />
     <ClCompile Include="RayTracer\D3D11_Driver.cpp" />
     <ClCompile Include="RayTracer\Renderer_RT.cpp" />
+    <ClCompile Include="RayTracer\XMCamera.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -88,7 +89,9 @@
     <ClInclude Include="Global\TimerQPC.h" />
     <ClInclude Include="RayTracer\Application_RT.h" />
     <ClInclude Include="RayTracer\D3D11_Driver.h" />
+    <ClInclude Include="RayTracer\D3DStd.h" />
     <ClInclude Include="RayTracer\Renderer_RT.h" />
+    <ClInclude Include="RayTracer\XMCamera.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
