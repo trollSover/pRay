@@ -2,11 +2,17 @@
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
+#pragma comment(lib, "dxguid.lib")
 
 #pragma warning( disable : 4005 )
 #include <D3D11.h>
 #pragma warning( disable : 4005 )
 #include <DirectXMath.h>
+#include <d3dcompiler.h>
+#include <Windows.h>
+#include <d3dcommon.h>
+
+
 
 using namespace DirectX;
 
@@ -91,4 +97,11 @@ struct MATRIX4X4
 	//XMFLOAT4X4 operator=(const XMFLOAT4X4& d2)	{ XMStoreFloat4x4(&this->d, XMLoadFloat4x4(&d2)); }
 	operator const XMFLOAT4*()	{ return (XMFLOAT4*)this; }
 	operator XMMATRIX()			{ return XMLoadFloat4x4(&d); }
+};
+
+struct Vertex
+{
+	VECTOR4 position;
+	VECTOR3 normal;
+	VECTOR2 uv;
 };

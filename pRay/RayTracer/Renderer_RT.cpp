@@ -43,14 +43,14 @@ bool Renderer_RT::VClose(ErrorMsg& msg)
 
 bool Renderer_RT::VDraw(Time time)
 {
-	HRESULT hr = S_OK;
-	ID3D11UnorderedAccessView* uav[] = { m_pBackBuffer };
-	m_driver.GetContext()->CSSetUnorderedAccessViews(0, 1, uav, NULL);
+	//HRESULT hr = S_OK;
+	//ID3D11UnorderedAccessView* uav[] = { m_pBackBuffer };
+	//m_driver.GetContext()->CSSetUnorderedAccessViews(0, 1, uav, NULL);
 
-	hr = m_driver.GetSwapChain()->Present(0, 0);
+	//hr = m_driver.GetSwapChain()->Present(0, 0);
 
-	if (FAILED(hr))
-		return false;
+	//if (FAILED(hr))
+	//	return false;
 
 	return true;
 }

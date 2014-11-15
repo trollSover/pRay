@@ -59,7 +59,7 @@ HRESULT D3D11_Driver::InitDevice(Resolution resolution, HWND& hWnd, bool windowe
 	return hr;
 }
 
-HRESULT D3D11_Driver::CreateBackBuffer(ID3D11UnorderedAccessView* uav)
+HRESULT D3D11_Driver::CreateBackBuffer(ID3D11UnorderedAccessView*& uav)
 {
 	HRESULT hr					= S_OK;
 	ID3D11Texture2D* backBuffer = nullptr;

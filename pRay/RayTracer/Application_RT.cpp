@@ -1,14 +1,16 @@
 #include "Application_RT.h"
 
 #include "../Global/SimpleInput.h"
-#include "Renderer_RT.h"
+#include "DriverUtility.h"
 
-extern Renderer_RT* g_pRenderer;
+#include <vector>
+#include "D3DStd.h"
 
 Application_RT::Application_RT()
-: m_appName("BTH 2014- RayTracer"), m_resolution(Resolution(800,600))
+	: m_appName("BTH 2014- RayTracer"), m_resolution(Resolution(800,600))
 {
-
+	m_vertexBuffer = nullptr;
+	m_testShader = nullptr;
 }
 
 Application_RT::~Application_RT()
@@ -38,6 +40,25 @@ bool Application_RT::VInit(ErrorMsg& msg)
 		return false;
 	}
 
+	if (!CreateComputeShader(msg, L"test.fx", "main", m_testShader))
+	{
+		Print(msg);
+		return false;
+	}
+	
+	std::vector<Vertex> vertices;
+	Vertex v;
+	v.position  = VECTOR4(0, 0, 0, 1);
+	v.normal	= VECTOR3(0, 1, 0);
+	v.uv		= VECTOR2(0, 0);
+	vertices.push_back(v);
+
+	if (!CreateUABuffer(msg, (void**)&vertices[0], m_vertexBuffer, vertices.size() * sizeof(Vertex), sizeof(Vertex)))
+	{
+		Print(msg);
+		return false;
+	}
+
 	return true;
 }
 
@@ -47,6 +68,18 @@ bool Application_RT::VUpdate(Time time)
 		return false;
 
 	UpdateCamera(time);
+
+	HRESULT hr = S_OK;
+	ID3D11UnorderedAccessView* uav[] = { BackBuffer() };
+	Context()->CSSetUnorderedAccessViews(0, 1, uav, NULL);
+
+	Context()->CSSetShader(m_testShader, nullptr, 0);
+	Context()->Dispatch(32, 32, 1);
+	Context()->CSSetShader(nullptr, nullptr, 0);
+	hr = SwapChain()->Present(0, 0);
+
+	if (FAILED(hr))
+		return false;
 
 	return true;
 }

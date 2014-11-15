@@ -13,6 +13,9 @@ private:
 	SimpleInput*	m_pInput;
 	XMCamera		m_xmCamera;
 
+	ID3D11Buffer*			m_vertexBuffer;
+	ID3D11ComputeShader*	m_testShader;
+
 protected:
 public:
 

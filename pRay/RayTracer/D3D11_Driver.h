@@ -4,6 +4,8 @@
 
 #include "D3DStd.h"
 
+
+
 class D3D11_Driver
 {
 private:
@@ -26,5 +28,5 @@ private:
 protected:
 public:
 	HRESULT InitDevice(Resolution, HWND&, bool windowed);
-	HRESULT CreateBackBuffer(ID3D11UnorderedAccessView* uav);
+	HRESULT CreateBackBuffer(ID3D11UnorderedAccessView*& uav);
 };

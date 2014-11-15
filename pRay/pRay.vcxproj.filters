@@ -93,5 +93,8 @@
     <ClInclude Include="RayTracer\D3DStd.h">
       <Filter>RayTracer_Application\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="RayTracer\DriverUtility.h">
+      <Filter>RayTracer_Application\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
