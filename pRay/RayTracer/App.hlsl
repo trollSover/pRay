@@ -72,8 +72,8 @@ struct Intersection				// 24 bytes
 {
 	int iTriangleId;			// 4 bytes
 	float fU, fV, fT;			// 12 bytes
-	int iVisitedNodes;			// 4 bytes
-	int iRoot;					// 4 bytes
+	//int iVisitedNodes;			// 4 bytes
+	//int iRoot;					// 4 bytes
 };
 
 struct Material					// 4 bytes
@@ -98,26 +98,26 @@ struct Primitive				// 64 bytes
 };
 
 // SRVs
-StructuredBuffer<int>				g_sPrimitives		:	register( t0 );
-StructuredBuffer<Node>				g_sNodes			:	register( t1 );
-StructuredBuffer<Vertex>			g_sVertices			:	register( t2 );
-StructuredBuffer<DWORD>				g_sIndices			:	register( t3 );
-StructuredBuffer<LBVHNode>			g_sLBVHNodes		:	register( t10 );
-Texture2DArray						g_sTextures			:	register( t4 );
-Texture2DArray						g_sSpecularMaps		:	register( t5 );
-Texture2DArray						g_sNormalMaps		:	register( t6 );
-StructuredBuffer<Material>			g_sMaterials		:	register( t7 );
-Texture2D							g_sRandomTx			:	register( t8 );
-TextureCube							g_sEnvironmentTx	:	register( t9 );
+//StructuredBuffer<int>				g_sPrimitives		:	register( t0 );
+//StructuredBuffer<Node>				g_sNodes			:	register( t1 );
+StructuredBuffer<Vertex>			g_sVertices			:	register( t0 );
+StructuredBuffer<DWORD>				g_sIndices			:	register( t1 );
+//StructuredBuffer<LBVHNode>			g_sLBVHNodes		:	register( t10 );
+//Texture2DArray						g_sTextures			:	register( t4 );
+//Texture2DArray						g_sSpecularMaps		:	register( t5 );
+//Texture2DArray						g_sNormalMaps		:	register( t6 );
+//StructuredBuffer<Material>			g_sMaterials		:	register( t7 );
+//Texture2D							g_sRandomTx			:	register( t8 );
+//TextureCube							g_sEnvironmentTx	:	register( t9 );
 
 // UAVs
 RWTexture2D<float4>					g_uResultTexture	:	register( u0 );
 RWStructuredBuffer<Ray>				g_uRays				:	register( u1 );
 RWStructuredBuffer<Intersection>	g_uIntersections	:	register( u2 );
 RWStructuredBuffer<float4>			g_uAccumulation		:	register( u3 );
-RWStructuredBuffer<Primitive>		g_uPrimitives		:	register( u4 );
-RWStructuredBuffer<LBVHNode>		g_uLVBH				:	register( u5 );
-RWStructuredBuffer<MortonCode>		g_uMortonCode		:	register( u6 );
+//RWStructuredBuffer<Primitive>		g_uPrimitives		:	register( u4 );
+//RWStructuredBuffer<LBVHNode>		g_uLVBH				:	register( u5 );
+//RWStructuredBuffer<MortonCode>		g_uMortonCode		:	register( u6 );
 
 // Samplers
 SamplerState g_ssSampler : register(s0);
@@ -152,17 +152,18 @@ Intersection IntersectP(Ray ray)
 	bIntersection.fU = -1;
 	bIntersection.fV = -1;
 	bIntersection.fT = -1;
-	bIntersection.iVisitedNodes = 0;
-	bIntersection.iRoot = 0;
+	//bIntersection.iVisitedNodes = 0;
+	//bIntersection.iRoot = 0;
 
 	const int iNumPrimitives = 10;
 	for (int i = 0; i < iNumPrimitives; ++i)
 	{
 		unsigned int offset = i * 3;
 		float3 A = g_sVertices[g_sIndices[offset]].vfPosition;
-			float3 B = g_sVertices[g_sIndices[offset + 1]].vfPosition;
-			float3 C = g_sVertices[g_sIndices[offset + 2]].vfPosition;
-			cIntersection = getIntersection(ray, A, B, C);
+		float3 B = g_sVertices[g_sIndices[offset + 1]].vfPosition;
+		float3 C = g_sVertices[g_sIndices[offset + 2]].vfPosition;
+		cIntersection = getIntersection(ray, A, B, C);
+
 		if (ray.iTriangleId != i && RayTriangleTest(cIntersection) && cIntersection.fT < bIntersection.fT)
 		{
 			bIntersection = cIntersection;

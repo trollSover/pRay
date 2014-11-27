@@ -104,8 +104,6 @@ static bool CreateComputeShader(ErrorMsg& msg, LPCWSTR file, char* entryPoint, I
 	FILE* shaderBlob		= nullptr;
 	TCHAR fileName[300];
 
-	
-
 	DWORD dwsf = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_IEEE_STRICTNESS | D3DCOMPILE_PREFER_FLOW_CONTROL;
 #ifdef _DEBUG
 	dwsf |= D3DCOMPILE_DEBUG;
@@ -129,7 +127,7 @@ static bool CreateComputeShader(ErrorMsg& msg, LPCWSTR file, char* entryPoint, I
 	if (error)
 	{
 		msg.SetMsg((LPCTSTR)error->GetBufferPointer());
-		return false;
+		Print(msg);
 	}
 
 	hr = Device()->CreateComputeShader(compiledShader->GetBufferPointer(), compiledShader->GetBufferSize(), nullptr, &cs);
@@ -173,7 +171,7 @@ static bool CreateUABuffer(ErrorMsg& msg, void** bufferData, ID3D11Buffer*& buff
 	return true;
 }
 
-static bool DispatchUAV(ID3D11UnorderedAccessView** uavs, ID3D11ComputeShader* shader, uint cx = 32, uint cy = 32, uint cz = 1)
+static bool DispatchUAV(ID3D11ComputeShader* shader, uint cx = 32, uint cy = 32, uint cz = 1)
 {
 	HRESULT hr = S_OK;
 

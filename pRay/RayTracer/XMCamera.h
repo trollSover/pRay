@@ -45,5 +45,5 @@ public:
 
 	MATRIX4X4	getViewMatrix()			const { return m_viewMatrix; }
 	MATRIX4X4	getProjectionMatrix()	const { return m_projectionMatrix; }
-	MATRIX4X4	getInverseMatrix()		const { return m_inverseMatrix; }
+	XMFLOAT4X4*	getInverseMatrix()			  { return &m_inverseMatrix; }
 };

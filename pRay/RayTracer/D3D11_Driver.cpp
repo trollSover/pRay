@@ -69,7 +69,13 @@ HRESULT D3D11_Driver::CreateBackBuffer(ID3D11UnorderedAccessView*& uav)
 	if (FAILED(hr))
 		return hr;
 
-	hr = m_pDevice->CreateUnorderedAccessView(backBuffer, NULL, &uav);
+	D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;
+	ZeroMemory(&uavd, sizeof(D3D11_UNORDERED_ACCESS_VIEW_DESC));
+	uavd.Format				= DXGI_FORMAT_R8G8B8A8_UNORM;
+	uavd.ViewDimension		= D3D11_UAV_DIMENSION_TEXTURE2D;
+	uavd.Texture2D.MipSlice = 0;
+
+	hr = m_pDevice->CreateUnorderedAccessView(backBuffer, &uavd, &uav);
 
 	return hr;
 }

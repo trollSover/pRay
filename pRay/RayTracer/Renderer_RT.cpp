@@ -30,6 +30,16 @@ bool Renderer_RT::VInit(ErrorMsg& msg, HWND& hWnd, Resolution resolution)
 		return false;
 	}
 
+	// create viewport
+	D3D11_VIEWPORT vp;
+	vp.Width = resolution.width;
+	vp.Height = resolution.height;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	m_driver.GetContext()->RSSetViewports(1, &vp);
+
 	return true;
 }
 

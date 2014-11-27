@@ -15,10 +15,15 @@ private:
 	XMCamera		m_xmCamera;
 
 	ID3D11Buffer*			m_vertexBuffer;
-	ID3D11ComputeShader*	m_primRays;
+	ID3D11ComputeShader*	m_primRayShader;
+	ID3D11ComputeShader*	m_intersectionShader;
+	ID3D11ComputeShader*	m_colorShader;
 	D3DBuffer				m_rays;
-
+	D3DBuffer				m_intersections;
+	D3DBuffer				m_vertices;
+	D3DBuffer				m_indices;
 	D3DBuffer				m_cbCamera;
+	D3DBuffer				m_colorAccumulation;
 
 protected:
 public:

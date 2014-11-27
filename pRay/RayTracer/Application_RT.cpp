@@ -7,11 +7,23 @@
 #include <vector>
 #include "D3DStd.h"
 
+struct Intersection
+{
+	int id;
+	float u, v, t;
+
+	Intersection()
+		: id(-1), t(0), u(0), v(0)
+	{}
+};
+
 Application_RT::Application_RT()
 	: m_appName("BTH 2014- RayTracer"), m_resolution(Resolution(800,600))
 {
-	m_vertexBuffer  = nullptr;
-	m_primRays		= nullptr;
+	m_vertexBuffer		= nullptr;
+	m_primRayShader		= nullptr;
+	m_intersectionShader= nullptr;
+	m_colorShader		= nullptr;
 }
 
 Application_RT::~Application_RT()
@@ -41,27 +53,65 @@ bool Application_RT::VInit(ErrorMsg& msg)
 		return false;
 	}
 
-	if (!CreateComputeShader(msg, L"RayTracer/CSPrimaryRays.hlsl", "CSGeneratePrimaryRays", m_primRays))
+	if (!CreateComputeShader(msg, L"RayTracer/CSPrimaryRays.hlsl", "CSGeneratePrimaryRays", m_primRayShader))
+	{
+		Print(msg);
+		return false;
+	}
+	if (!CreateComputeShader(msg, L"RayTracer/CSIntersections.hlsl", "CSComputeIntersections", m_intersectionShader))
+	{
+		Print(msg);
+		return false;
+	}
+	if (!CreateComputeShader(msg, L"RayTracer/CSComputeColorRT.hlsl", "CSComputeColor", m_colorShader))
 	{
 		Print(msg);
 		return false;
 	}
 	
 	std::vector<Vertex> vertices;
-	Vertex v;
-	v.position  = VECTOR4(0, 0, 0, 1);
-	v.normal	= VECTOR3(0, 1, 0);
-	v.uv		= VECTOR2(0, 0);
-	vertices.push_back(v);
+	Vertex v[8] =
+	{
+		Vertex{ VECTOR4(-1, 1, 1, 1), {} },
+		Vertex{ VECTOR4(-1, -1, 1, 1), {} },
+		Vertex{ VECTOR4(1, -1, 1, 1), {} },
+		Vertex{ VECTOR4(1, 1, 1, 1), {} },
+		Vertex{ VECTOR4(-1, 1, -1, 1), {} },
+		Vertex{ VECTOR4(-1, -1, -1, 1), {} },
+		Vertex{ VECTOR4(1, -1, -1, 1), {} },
+		Vertex{ VECTOR4(1, 1, -1, 1), {} },
+	};
 
-	//if (!CreateUABuffer(msg, (void**)&vertices[0], m_vertexBuffer, vertices.size() * sizeof(Vertex), sizeof(Vertex)))
-	//{
-	//	Print(msg);
-	//	return false;
-	//}
+	uint i[36] =
+	{	0, 1, 2,	0, 2, 3,	// front
+		4, 5, 6,	4, 6, 7,	// back
+		0, 1, 5,	0, 5, 4,	// left
+		3, 2, 6,	3, 6, 7,	// right
+		0, 3, 7,	0, 7, 4,	// top
+		1, 2, 6,	1, 6, 5,	// bottom
+	};
 
-	if (!m_rays.Init(msg, BT_STRUCTURED, BB_UAV, m_resolution.height * m_resolution.width, sizeof(Ray)))	return false;
-	if (!m_cbCamera.Init(msg, BT_STRUCTURED, BB_CONSTANT, 1, sizeof(MATRIX4X4)))							return false;
+	/* SRVS */
+	if (!m_vertices.Init(msg, BT_STRUCTURED, BB_SRV, 8, sizeof(Vertex), &v[0]))								
+		return false;
+	if (!m_indices.Init(msg, BT_STRUCTURED, BB_SRV, 36, sizeof(uint), &i[0]))									
+		return false;
+
+	/* UAVS */
+	if (!m_rays.Init(msg, BT_STRUCTURED, BB_UAV, m_resolution.height * m_resolution.width, sizeof(Ray)))	
+		return false;
+	if (!m_cbCamera.Init(msg, BT_STRUCTURED, BB_CONSTANT, 1, sizeof(MATRIX4X4)))							
+		return false;
+	if (!m_intersections.Init(msg, BT_STRUCTURED, BB_UAV, m_resolution.height * m_resolution.width, sizeof(Intersection)))
+		return false;
+	if (!m_colorAccumulation.Init(msg, BT_STRUCTURED, BB_UAV, m_resolution.height * m_resolution.width, sizeof(VECTOR4)))
+		return false;
+
+	ID3D11ShaderResourceView* srvs[] = { m_vertices.GetSRV(), m_indices.GetSRV()};
+	Context()->CSSetShaderResources(0, 2, srvs);
+
+	ID3D11UnorderedAccessView* uavs[] = { BackBuffer(), m_rays.GetUAV(), m_intersections.GetUAV(), m_colorAccumulation.GetUAV() };
+	Context()->CSSetUnorderedAccessViews(0, 4, uavs, NULL);
 
 	return true;
 }
@@ -74,16 +124,24 @@ bool Application_RT::VUpdate(Time time)
 	UpdateCamera(time);
 
 	HRESULT hr = S_OK;
-	ID3D11UnorderedAccessView* uav[] = { m_rays.GetUAV() };
-	Context()->CSSetUnorderedAccessViews(0, 1, uav, NULL);
+	//ID3D11UnorderedAccessView* uav[] = { m_rays.GetUAV() };
+	//Context()->CSSetUnorderedAccessViews(0, 1, uav, NULL);
 
-	hr = UpdateSubResource<MATRIX4X4>(m_cbCamera.GetBuffer(), &m_xmCamera.getInverseMatrix());
+	hr = UpdateSubResource<XMFLOAT4X4>(m_cbCamera.GetBuffer(), m_xmCamera.getInverseMatrix());
 
 	if (FAILED(hr))
 		return false;
 
 	// dispatch primary rays
-	DispatchUAV(uav, m_primRays);
+	DispatchUAV(m_primRayShader);
+
+	// intersect & color
+	for (int i = 0; i < 2; i++)
+	{
+		DispatchUAV(m_intersectionShader);
+		DispatchUAV(m_colorShader);
+	}
+
 	//Context()->CSSetShader(m_testShader, nullptr, 0);
 	//Context()->Dispatch(32, 32, 1);
 	//Context()->CSSetShader(nullptr, nullptr, 0);

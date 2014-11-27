@@ -28,7 +28,16 @@ HRESULT D3DBuffer::OnBufferType(ErrorMsg& msg, BufferBind bBind, uint nElements,
 	default:
 		{
 			D3D11_BUFFER_DESC ddesc = GetDynamicBufferDesc(sElements, nElements, bBind);
-			hr = CreateBuffer(ddesc, (ID3D11Buffer*&)m_pBuffer, (D3D11_SUBRESOURCE_DATA*)initData);
+			if (initData)
+			{			
+				D3D11_SUBRESOURCE_DATA srd;
+				srd.pSysMem = initData;
+				hr = CreateBuffer(ddesc, (ID3D11Buffer*&)m_pBuffer, &srd);
+			}
+			else
+			{
+				hr = CreateBuffer(ddesc, (ID3D11Buffer*&)m_pBuffer);
+			}
 
 			if (FAILED(hr))
 				break;

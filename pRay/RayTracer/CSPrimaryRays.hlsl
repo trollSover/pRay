@@ -31,6 +31,6 @@ void CSGeneratePrimaryRays(uint3 DTid : SV_DispatchThreadID, uint GIndex : SV_Gr
 	// Copy ray to global UAV
 	g_uRays[index] = ray;
 	// Initialize accumulation buffer and result buffer
-	//g_uAccumulation[index] = 0.0f;
-	//g_uResultTexture[DTid.xy] = 0.f;
+	g_uAccumulation[index] = 0.0f;
+	g_uResultTexture[DTid.xy] = 0.f;
 }
