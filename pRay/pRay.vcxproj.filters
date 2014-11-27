@@ -23,6 +23,9 @@
     <Filter Include="Global">
       <UniqueIdentifier>{ffaf8949-4e14-4b16-98a7-2dbff4a185f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RayTracer_Application\Graphics\Shaders">
+      <UniqueIdentifier>{bd68f275-abbc-4ab7-972b-b7200b41c618}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -96,5 +99,19 @@
     <ClInclude Include="RayTracer\DriverUtility.h">
       <Filter>RayTracer_Application\Graphics</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="RayTracer\App.hlsl">
+      <Filter>RayTracer_Application\Graphics\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="RayTracer\CSComputeColorRT.hlsl">
+      <Filter>RayTracer_Application\Graphics\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="RayTracer\CSIntersections.hlsl">
+      <Filter>RayTracer_Application\Graphics\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="RayTracer\CSPrimaryRays.hlsl">
+      <Filter>RayTracer_Application\Graphics\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

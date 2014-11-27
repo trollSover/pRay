@@ -96,6 +96,12 @@
     <ClInclude Include="RayTracer\Renderer_RT.h" />
     <ClInclude Include="RayTracer\XMCamera.h" />
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="RayTracer\App.hlsl" />
+    <FxCompile Include="RayTracer\CSComputeColorRT.hlsl" />
+    <FxCompile Include="RayTracer\CSIntersections.hlsl" />
+    <FxCompile Include="RayTracer\CSPrimaryRays.hlsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
