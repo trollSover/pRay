@@ -7,7 +7,7 @@
 [numthreads(32, 32, 1)]
 void CSComputeIntersections(uint3 DTid : SV_DispatchThreadID)
 {
-	unsigned int index = DTid.y * N + DTid.x;
+	unsigned int index = DTid.y * 1024 + DTid.x;
 
     if ( g_uRays[index].iTriangleId > (-2) )
 	{
