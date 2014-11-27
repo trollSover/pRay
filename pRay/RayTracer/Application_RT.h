@@ -3,6 +3,7 @@
 #include "../CoreSystems/IApplication.h"
 #include "XMCamera.h"
 #include "../Global/SimpleInput.h"
+#include "D3DBuffer.h"
 
 class Application_RT
 	: public IApplication
@@ -14,7 +15,10 @@ private:
 	XMCamera		m_xmCamera;
 
 	ID3D11Buffer*			m_vertexBuffer;
-	ID3D11ComputeShader*	m_testShader;
+	ID3D11ComputeShader*	m_primRays;
+	D3DBuffer				m_rays;
+
+	D3DBuffer				m_cbCamera;
 
 protected:
 public:

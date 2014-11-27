@@ -1,21 +1,17 @@
-﻿Build started 2014-11-15 13:26:41.
+﻿Build started 2014-11-27 13:08:01.
      1>Project "C:\temp\pRay\pRay\pRay.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\temp\pRay\pRay\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt RayTracer\Application_RT.cpp
-         Application_RT.cpp
-     1>c:\temp\pray\pray\raytracer\driverutility.h(105): warning C4101: 'fileName' : unreferenced local variable
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\temp\pRay\pRay\Debug\pRay.exe" /INCREMENTAL /NOLOGO d3d11.lib d3dcompiler.lib dxguid.lib winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\temp\pRay\pRay\Debug\pRay.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\temp\pRay\pRay\Debug\pRay.lib" /MACHINE:X86 Debug\System.obj
-         Debug\Window.obj
-         Debug\TimerQPC.obj
-         Debug\Application_RT.obj
-         Debug\D3D11_Driver.obj
-         Debug\Renderer_RT.obj
-         Debug\XMCamera.obj
-         Debug\Source.obj
-         pRay.vcxproj -> C:\temp\pRay\pRay\Debug\pRay.exe
-     1>Done Building Project "C:\temp\pRay\pRay\pRay.vcxproj" (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(396,5): warning MSB8029: The Intermediate directory or Output directory cannot reside under the Temporary directory as it could lead to issues with incremental build.
+     1>FxCompile:
+         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe /nologo /E"CSComputeColor" /T cs_5_0 /Fo "C:\temp\pRay\pRay\Debug\CSComputeColorRT.cso" /Od /Zi RayTracer\CSComputeColorRT.hlsl 
+     1>FXC : warning X4714: sum of temp registers and indexable temp registers times 1024 threads exceeds the recommended total 16384.  Performance may be reduced
+         
+         compilation object save succeeded; see C:\temp\pRay\pRay\Debug\CSComputeColorRT.cso
+         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe /nologo /E"CSComputeIntersections" /T cs_5_0 /Fo "C:\temp\pRay\pRay\Debug\CSIntersections.cso" /Od /Zi RayTracer\CSIntersections.hlsl 
+     1>C:\temp\pRay\pRay\RayTracer\App.hlsl(189,2-22): error X4000: variable 'bIntersection' used without having been completely initialized
+         
+         compilation failed; no code produced
+     1>Done Building Project "C:\temp\pRay\pRay\pRay.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:01.49
+Time Elapsed 00:00:00.28

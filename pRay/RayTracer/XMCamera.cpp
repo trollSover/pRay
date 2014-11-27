@@ -81,6 +81,11 @@ void XMCamera::updateView()
 	// update viewMatrix
 	XMStoreFloat4x4(&m_viewMatrix, XMMatrixLookAtLH(XMLoadFloat3(&m_position), XMLoadFloat3(&m_lookAt), XMLoadFloat3(&m_up)));
 	transposeMatrix(m_viewMatrix);
+
+	// update inverse matrix
+	XMMATRIX view = XMLoadFloat4x4(&m_viewMatrix);
+	XMMATRIX inverse = XMMatrixInverse(&XMMatrixDeterminant(view), view);
+	XMStoreFloat4x4(&m_inverseMatrix, inverse);
 }
 
 void XMCamera::update(const Time& time)

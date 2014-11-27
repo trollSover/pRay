@@ -2,6 +2,7 @@
 
 #include "../Global/SimpleInput.h"
 #include "DriverUtility.h"
+#include "Ray.h"
 
 #include <vector>
 #include "D3DStd.h"
@@ -9,8 +10,8 @@
 Application_RT::Application_RT()
 	: m_appName("BTH 2014- RayTracer"), m_resolution(Resolution(800,600))
 {
-	m_vertexBuffer = nullptr;
-	m_testShader = nullptr;
+	m_vertexBuffer  = nullptr;
+	m_primRays		= nullptr;
 }
 
 Application_RT::~Application_RT()
@@ -40,7 +41,7 @@ bool Application_RT::VInit(ErrorMsg& msg)
 		return false;
 	}
 
-	if (!CreateComputeShader(msg, L"test.fx", "main", m_testShader))
+	if (!CreateComputeShader(msg, L"RayTracer/CSPrimaryRays.hlsl", "CSGeneratePrimaryRays", m_primRays))
 	{
 		Print(msg);
 		return false;
@@ -53,11 +54,14 @@ bool Application_RT::VInit(ErrorMsg& msg)
 	v.uv		= VECTOR2(0, 0);
 	vertices.push_back(v);
 
-	if (!CreateUABuffer(msg, (void**)&vertices[0], m_vertexBuffer, vertices.size() * sizeof(Vertex), sizeof(Vertex)))
-	{
-		Print(msg);
-		return false;
-	}
+	//if (!CreateUABuffer(msg, (void**)&vertices[0], m_vertexBuffer, vertices.size() * sizeof(Vertex), sizeof(Vertex)))
+	//{
+	//	Print(msg);
+	//	return false;
+	//}
+
+	if (!m_rays.Init(msg, BT_STRUCTURED, BB_UAV, m_resolution.height * m_resolution.width, sizeof(Ray)))	return false;
+	if (!m_cbCamera.Init(msg, BT_STRUCTURED, BB_CONSTANT, 1, sizeof(MATRIX4X4)))							return false;
 
 	return true;
 }
@@ -70,12 +74,19 @@ bool Application_RT::VUpdate(Time time)
 	UpdateCamera(time);
 
 	HRESULT hr = S_OK;
-	ID3D11UnorderedAccessView* uav[] = { BackBuffer() };
+	ID3D11UnorderedAccessView* uav[] = { m_rays.GetUAV() };
 	Context()->CSSetUnorderedAccessViews(0, 1, uav, NULL);
 
-	Context()->CSSetShader(m_testShader, nullptr, 0);
-	Context()->Dispatch(32, 32, 1);
-	Context()->CSSetShader(nullptr, nullptr, 0);
+	hr = UpdateSubResource<MATRIX4X4>(m_cbCamera.GetBuffer(), &m_xmCamera.getInverseMatrix());
+
+	if (FAILED(hr))
+		return false;
+
+	// dispatch primary rays
+	DispatchUAV(uav, m_primRays);
+	//Context()->CSSetShader(m_testShader, nullptr, 0);
+	//Context()->Dispatch(32, 32, 1);
+	//Context()->CSSetShader(nullptr, nullptr, 0);
 	hr = SwapChain()->Present(0, 0);
 
 	if (FAILED(hr))

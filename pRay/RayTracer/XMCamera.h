@@ -13,6 +13,7 @@ private:
 	XMFLOAT4X4	m_viewMatrix;
 	XMFLOAT4X4	m_projectionMatrix;
 	XMFLOAT4X4	m_rotationMatrix;
+	XMFLOAT4X4  m_inverseMatrix;
 
 	float m_roll;
 	float m_pitch;
@@ -44,6 +45,5 @@ public:
 
 	MATRIX4X4	getViewMatrix()			const { return m_viewMatrix; }
 	MATRIX4X4	getProjectionMatrix()	const { return m_projectionMatrix; }
-	//MATRIX4X4	getViewMatrix()			const final { return MATRIX4X4(m_viewMatrix); }
-	//MATRIX4X4	getProjectionMatrix()	const final { return MATRIX4X4(m_projectionMatrix); }
+	MATRIX4X4	getInverseMatrix()		const { return m_inverseMatrix; }
 };

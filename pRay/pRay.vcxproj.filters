@@ -24,7 +24,7 @@
       <UniqueIdentifier>{ffaf8949-4e14-4b16-98a7-2dbff4a185f2}</UniqueIdentifier>
     </Filter>
     <Filter Include="RayTracer_Application\Graphics\Shaders">
-      <UniqueIdentifier>{bd68f275-abbc-4ab7-972b-b7200b41c618}</UniqueIdentifier>
+      <UniqueIdentifier>{0e981517-7c22-4f66-9f76-78e684d3d95c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -51,6 +51,18 @@
     </ClCompile>
     <ClCompile Include="RayTracer\XMCamera.cpp">
       <Filter>RayTracer_Application\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracer\Light.cpp">
+      <Filter>RayTracer_Application</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracer\Ray.cpp">
+      <Filter>RayTracer_Application</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracer\Geometry.cpp">
+      <Filter>RayTracer_Application</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTracer\D3DBuffer.cpp">
+      <Filter>RayTracer_Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,9 +111,24 @@
     <ClInclude Include="RayTracer\DriverUtility.h">
       <Filter>RayTracer_Application\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="RayTracer\Light.h">
+      <Filter>RayTracer_Application</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracer\Ray.h">
+      <Filter>RayTracer_Application</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracer\Geometry.h">
+      <Filter>RayTracer_Application</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracer\D3DBuffer.h">
+      <Filter>RayTracer_Application</Filter>
+    </ClInclude>
+    <ClInclude Include="RayTracer\D3DBufferUtility.h">
+      <Filter>RayTracer_Application</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="RayTracer\App.hlsl">
+    <FxCompile Include="RayTracer\CSPrimaryRays.hlsl">
       <Filter>RayTracer_Application\Graphics\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="RayTracer\CSComputeColorRT.hlsl">
@@ -110,8 +137,10 @@
     <FxCompile Include="RayTracer\CSIntersections.hlsl">
       <Filter>RayTracer_Application\Graphics\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="RayTracer\CSPrimaryRays.hlsl">
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RayTracer\App.hlsl">
       <Filter>RayTracer_Application\Graphics\Shaders</Filter>
-    </FxCompile>
+    </None>
   </ItemGroup>
 </Project>

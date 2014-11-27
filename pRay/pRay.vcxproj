@@ -75,6 +75,10 @@
     <ClCompile Include="Global\TimerQPC.cpp" />
     <ClCompile Include="RayTracer\Application_RT.cpp" />
     <ClCompile Include="RayTracer\D3D11_Driver.cpp" />
+    <ClCompile Include="RayTracer\D3DBuffer.cpp" />
+    <ClCompile Include="RayTracer\Geometry.cpp" />
+    <ClCompile Include="RayTracer\Light.cpp" />
+    <ClCompile Include="RayTracer\Ray.cpp" />
     <ClCompile Include="RayTracer\Renderer_RT.cpp" />
     <ClCompile Include="RayTracer\XMCamera.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -91,16 +95,43 @@
     <ClInclude Include="Global\TimerQPC.h" />
     <ClInclude Include="RayTracer\Application_RT.h" />
     <ClInclude Include="RayTracer\D3D11_Driver.h" />
+    <ClInclude Include="RayTracer\D3DBuffer.h" />
+    <ClInclude Include="RayTracer\D3DBufferUtility.h" />
     <ClInclude Include="RayTracer\D3DStd.h" />
     <ClInclude Include="RayTracer\DriverUtility.h" />
+    <ClInclude Include="RayTracer\Geometry.h" />
+    <ClInclude Include="RayTracer\Light.h" />
+    <ClInclude Include="RayTracer\Ray.h" />
     <ClInclude Include="RayTracer\Renderer_RT.h" />
     <ClInclude Include="RayTracer\XMCamera.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="RayTracer\App.hlsl" />
-    <FxCompile Include="RayTracer\CSComputeColorRT.hlsl" />
-    <FxCompile Include="RayTracer\CSIntersections.hlsl" />
-    <FxCompile Include="RayTracer\CSPrimaryRays.hlsl" />
+    <None Include="RayTracer\App.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </None>
+    <FxCompile Include="RayTracer\CSComputeColorRT.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CSComputeColor</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="RayTracer\CSIntersections.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CSComputeIntersections</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
+    </FxCompile>
+    <FxCompile Include="RayTracer\CSPrimaryRays.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CSGeneratePrimaryRays</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

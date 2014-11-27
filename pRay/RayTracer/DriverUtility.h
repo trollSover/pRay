@@ -10,28 +10,28 @@ using namespace DirectX;
 
 extern IRenderer* g_pRenderer;
 
-ID3D11Device* Device()
+static ID3D11Device* Device()
 {
 	return dynamic_cast<Renderer_RT*>(g_pRenderer)->GetDriver()->GetDevice();
 }
 
-ID3D11DeviceContext* Context()
+static ID3D11DeviceContext* Context()
 {
 	return dynamic_cast<Renderer_RT*>(g_pRenderer)->GetDriver()->GetContext();
 }
 
-ID3D11UnorderedAccessView* BackBuffer()
+static ID3D11UnorderedAccessView* BackBuffer()
 {
 	return dynamic_cast<Renderer_RT*>(g_pRenderer)->m_pBackBuffer;
 }
 
-IDXGISwapChain* SwapChain()
+static IDXGISwapChain* SwapChain()
 {
 	return dynamic_cast<Renderer_RT*>(g_pRenderer)->m_driver.GetSwapChain();
 }
 
 template<typename RWStruc, uint nElements>
-bool CreateUAV(ErrorMsg& msg, ID3D11UnorderedAccessView* uav, ID3D11ShaderResourceView* srv, ID3D11Buffer* buffer)
+static bool CreateUAV(ErrorMsg& msg, ID3D11UnorderedAccessView* uav, ID3D11ShaderResourceView* srv, ID3D11Buffer* buffer)
 {
 	HRESULT hr = S_OK;
 
@@ -86,7 +86,7 @@ bool CreateUAV(ErrorMsg& msg, ID3D11UnorderedAccessView* uav, ID3D11ShaderResour
 	return true;
 }
 
-bool StageUAV(ID3D11UnorderedAccessView* uav)
+static bool StageUAV(ID3D11UnorderedAccessView* uav)
 {
 	ID3D11UnorderedAccessView* uavs[] = { uav };
 
@@ -95,7 +95,7 @@ bool StageUAV(ID3D11UnorderedAccessView* uav)
 	return true;
 }
 
-bool CreateComputeShader(ErrorMsg& msg, LPCWSTR file, char* entryPoint, ID3D11ComputeShader*& cs)
+static bool CreateComputeShader(ErrorMsg& msg, LPCWSTR file, char* entryPoint, ID3D11ComputeShader*& cs)
 {
 	HRESULT hr = S_OK;
 
@@ -114,11 +114,15 @@ bool CreateComputeShader(ErrorMsg& msg, LPCWSTR file, char* entryPoint, ID3D11Co
 	dwsf |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
 #endif
 
-	hr = D3DCompileFromFile(file, NULL, NULL, entryPoint, "cs_5_0", dwsf, NULL, &compiledShader, &error);
+	hr = D3DCompileFromFile(file, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPoint, "cs_5_0", dwsf, NULL, &compiledShader, &error);
 	
 	if (FAILED(hr))
 	{
-		msg.SetMsg(hr);
+		size_t s = error->GetBufferSize();
+		char* c = new char[s];
+		memcpy(c, error->GetBufferPointer(), s);
+
+		msg.SetMsg(c);
 		return false;
 	}
 
@@ -142,7 +146,7 @@ bool CreateComputeShader(ErrorMsg& msg, LPCWSTR file, char* entryPoint, ID3D11Co
 	return true;
 }
 
-bool CreateUABuffer(ErrorMsg& msg, void** bufferData, ID3D11Buffer*& buffer, uint bufferSize, uint bufferStride)
+static bool CreateUABuffer(ErrorMsg& msg, void** bufferData, ID3D11Buffer*& buffer, uint bufferSize, uint bufferStride)
 {
 	HRESULT hr = S_OK;
 	D3D11_BUFFER_DESC uad;
@@ -167,4 +171,55 @@ bool CreateUABuffer(ErrorMsg& msg, void** bufferData, ID3D11Buffer*& buffer, uin
 	}
 
 	return true;
+}
+
+static bool DispatchUAV(ID3D11UnorderedAccessView** uavs, ID3D11ComputeShader* shader, uint cx = 32, uint cy = 32, uint cz = 1)
+{
+	HRESULT hr = S_OK;
+
+	Context()->CSSetShader(shader, nullptr, 0);
+
+	Context()->Dispatch(cx, cy, cz);
+	Context()->CSSetShader(nullptr, nullptr, 0);
+
+	return true;
+}
+
+static HRESULT CreateTexture(D3D11_TEXTURE2D_DESC& desc, ID3D11Texture2D*& texture)
+{
+	return Device()->CreateTexture2D(&desc, NULL, &texture);
+}
+
+static HRESULT CreateSRV(D3D11_SHADER_RESOURCE_VIEW_DESC& desc, ID3D11Texture2D* texture, ID3D11ShaderResourceView*& srv)
+{
+	return Device()->CreateShaderResourceView(texture, &desc, &srv);
+}
+
+static HRESULT CreateBuffer(D3D11_BUFFER_DESC& desc, ID3D11Buffer*& buffer, D3D11_SUBRESOURCE_DATA* initData = nullptr)
+{
+	return Device()->CreateBuffer(&desc, initData, &buffer);
+}
+
+static HRESULT CreateUAV(D3D11_UNORDERED_ACCESS_VIEW_DESC& desc, ID3D11Resource* resource, ID3D11UnorderedAccessView*& uav)
+{
+	return Device()->CreateUnorderedAccessView(resource, &desc, &uav);
+}
+
+template<typename T>
+static HRESULT UpdateSubResource(ID3D11Resource* resource, T* data)
+{
+	HRESULT hr = S_OK;
+
+	D3D11_MAPPED_SUBRESOURCE msr;
+
+	hr = Context()->Map(resource, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+
+	if (FAILED(hr))
+		return hr;
+
+	msr.pData = data;
+
+	Context()->Unmap(resource, 0);
+
+	return hr;
 }
