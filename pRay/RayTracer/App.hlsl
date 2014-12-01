@@ -102,6 +102,7 @@ struct Primitive				// 64 bytes
 //StructuredBuffer<Node>				g_sNodes			:	register( t1 );
 StructuredBuffer<Vertex>			g_sVertices			:	register( t0 );
 StructuredBuffer<DWORD>				g_sIndices			:	register( t1 );
+Texture2D							g_smiley			:	register(t2);
 //StructuredBuffer<LBVHNode>			g_sLBVHNodes		:	register( t10 );
 //Texture2DArray						g_sTextures			:	register( t4 );
 //Texture2DArray						g_sSpecularMaps		:	register( t5 );
@@ -128,8 +129,8 @@ Intersection getIntersection(Ray ray, float3 A, float3 B, float3 C)
 	intersection.iTriangleId = -1;
 	float3 P, T, Q;
 	float3 E1 = B - A;
-		float3 E2 = C - A;
-		P = cross(ray.vfDirection, E2);
+	float3 E2 = C - A;
+	P = cross(ray.vfDirection, E2);
 	float det = 1.0f / dot(E1, P);
 	T = ray.vfOrigin - A;
 	intersection.fU = dot(T, P) * det;
@@ -151,11 +152,8 @@ Intersection IntersectP(Ray ray)
 	bIntersection.fT = 10000.f;
 	bIntersection.fU = -1;
 	bIntersection.fV = -1;
-	bIntersection.fT = -1;
-	//bIntersection.iVisitedNodes = 0;
-	//bIntersection.iRoot = 0;
 
-	const int iNumPrimitives = 10;
+	const int iNumPrimitives = 12;
 	for (int i = 0; i < iNumPrimitives; ++i)
 	{
 		unsigned int offset = i * 3;

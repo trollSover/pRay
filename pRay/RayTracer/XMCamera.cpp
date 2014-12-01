@@ -4,7 +4,7 @@
 #define DEG_TO_RAD	0.01745329251994329576923690768489
 
 XMCamera::XMCamera()
-: m_lookAt(XMFLOAT3(0, 0, 1)), m_position(XMFLOAT3(0, 0, 0)), m_up(XMFLOAT3(0, 1, 0)),
+: m_lookAt(XMFLOAT3(0, 0, 1)), m_position(XMFLOAT3(0, 0, -20)), m_up(XMFLOAT3(0, 1, 0)),
 m_roll(0.0f), m_pitch(0.0f), m_yaw(0.0f),
 m_forward(0.0f, 0.0f, 1.0f), m_right(1.0f, 0.0f, 0.0f),
 movementSpeed(10.0f)

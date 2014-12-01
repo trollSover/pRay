@@ -101,7 +101,15 @@ struct MATRIX4X4
 
 struct Vertex
 {
-	VECTOR4 position;
+	VECTOR3 position;
 	VECTOR3 normal;
 	VECTOR2 uv;
+
+	Vertex(float size = 1.0f, VECTOR3 _p = VECTOR3(0, 0, 0), VECTOR3 _n = VECTOR3(0, 0, 0), VECTOR2 _uv = VECTOR2(0, 0))
+		: position(_p), normal(_n), uv(_uv)
+	{
+		position.d.x *= size;
+		position.d.y *= size;
+		position.d.z *= size;
+	}
 };

@@ -73,6 +73,7 @@
     <ClCompile Include="CoreSystems\System.cpp" />
     <ClCompile Include="CoreSystems\Window.cpp" />
     <ClCompile Include="Global\TimerQPC.cpp" />
+    <ClCompile Include="include\WICTextureLoader.cpp" />
     <ClCompile Include="RayTracer\Application_RT.cpp" />
     <ClCompile Include="RayTracer\D3D11_Driver.cpp" />
     <ClCompile Include="RayTracer\D3DBuffer.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="CoreSystems\Window.h" />
     <ClInclude Include="Global\SimpleInput.h" />
     <ClInclude Include="Global\TimerQPC.h" />
+    <ClInclude Include="include\WICTextureLoader.h" />
     <ClInclude Include="RayTracer\Application_RT.h" />
     <ClInclude Include="RayTracer\D3D11_Driver.h" />
     <ClInclude Include="RayTracer\D3DBuffer.h" />

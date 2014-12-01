@@ -203,8 +203,8 @@ static HRESULT CreateUAV(D3D11_UNORDERED_ACCESS_VIEW_DESC& desc, ID3D11Resource*
 	return Device()->CreateUnorderedAccessView(resource, &desc, &uav);
 }
 
-template<typename T>
-static HRESULT UpdateSubResource(ID3D11Resource* resource, T* data)
+template<typename T, typename R>
+static HRESULT UpdateSubResource(ID3D11Resource* resource, T data)
 {
 	HRESULT hr = S_OK;
 
@@ -215,7 +215,9 @@ static HRESULT UpdateSubResource(ID3D11Resource* resource, T* data)
 	if (FAILED(hr))
 		return hr;
 
-	msr.pData = data;
+	R* tmp = (R*)msr.pData;
+	tmp->Update(data);
+	//msr.pData = data;
 
 	Context()->Unmap(resource, 0);
 

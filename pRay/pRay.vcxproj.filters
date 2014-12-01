@@ -64,6 +64,9 @@
     <ClCompile Include="RayTracer\D3DBuffer.cpp">
       <Filter>RayTracer_Application</Filter>
     </ClCompile>
+    <ClCompile Include="include\WICTextureLoader.cpp">
+      <Filter>Global</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreSystems\IApplication.h">
@@ -125,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="RayTracer\D3DBufferUtility.h">
       <Filter>RayTracer_Application</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WICTextureLoader.h">
+      <Filter>Global</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

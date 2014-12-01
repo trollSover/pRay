@@ -5,6 +5,24 @@
 #include "../Global/SimpleInput.h"
 #include "D3DBuffer.h"
 
+#include "../include/WICTextureLoader/DirectXTex.h"
+#pragma comment(lib, "DirectXTex.lib")
+
+struct cbCamera
+{
+	XMFLOAT4X4 g_mfWorld;
+
+	cbCamera()
+	{
+		XMStoreFloat4x4(&g_mfWorld, XMMatrixIdentity());
+	}
+
+	void Update(XMFLOAT4X4 matrix)
+	{
+		g_mfWorld = matrix;
+	}
+};
+
 class Application_RT
 	: public IApplication
 {
@@ -24,6 +42,10 @@ private:
 	D3DBuffer				m_indices;
 	D3DBuffer				m_cbCamera;
 	D3DBuffer				m_colorAccumulation;
+
+	D3DBuffer				m_textureSmiley;
+
+	ID3D11SamplerState*		m_linearSampler;
 
 protected:
 public:
